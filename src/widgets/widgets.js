@@ -44,6 +44,7 @@ import gitea from "./gitea/widget";
 import gitlab from "./gitlab/widget";
 import glances from "./glances/widget";
 import gluetun from "./gluetun/widget";
+import goss from "./goss/widget";
 import gotify from "./gotify/widget";
 import grafana from "./grafana/widget";
 import hdhomerun from "./hdhomerun/widget";
@@ -197,6 +198,7 @@ const widgets = {
   gitlab,
   glances,
   gluetun,
+  goss,
   gotify,
   grafana,
   hdhomerun,

@@ -1,0 +1,22 @@
+import Block from "components/services/widget/block";
+import Container from "components/services/widget/container";
+import useWidgetAPI from "utils/proxy/use-widget-api";
+
+export default function Component({ service }) {
+  const { data, error } = useWidgetAPI(service.widget);
+
+  if (error) return <Container service={service} error={error} />;
+
+  const summary = data?.summary ?? {};
+  const failed = summary["failed-count"] ?? 0;
+
+  return (
+    <div className={failed > 0 ? "ring-2 ring-red-500 rounded-md" : ""}>
+      <Container service={service}>
+        <Block label="goss.tests" value={summary["test-count"]} />
+        <Block label="goss.failed" value={failed} />
+        <Block label="goss.skipped" value={summary["skipped-count"]} />
+      </Container>
+    </div>
+  );
+}
