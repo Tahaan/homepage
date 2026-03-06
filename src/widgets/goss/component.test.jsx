@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 
-import { screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderWithProviders } from "test-utils/render-with-providers";
 import { expectBlockValue } from "test-utils/widget-assertions";
+import { screen, fireEvent } from "@testing-library/react";
 
 const { useWidgetAPI } = vi.hoisted(() => ({ useWidgetAPI: vi.fn() }));
 vi.mock("utils/proxy/use-widget-api", () => ({ default: useWidgetAPI }));
@@ -61,5 +61,39 @@ describe("widgets/goss/component", () => {
     );
 
     expect(container.querySelector(".service-block")).toBeNull();
+  });
+
+  it("renders raw summary when data is available", () => {
+    useWidgetAPI.mockReturnValue({
+      data: { summary: { "test-count": 9, "failed-count": 0, "skipped-count": 1 } },
+      error: undefined,
+    });
+
+    renderWithProviders(
+      <Component service={{ widget: { type: "goss", url: "http://x" } }} />,
+      { settings: { hideErrors: false } },
+    );
+
+    expect(screen.getByText("raw")).toBeInTheDocument();
+  });
+
+  it("collapses raw data when clicked", () => {
+    useWidgetAPI.mockReturnValue({
+      data: { summary: { "test-count": 9, "failed-count": 0, "skipped-count": 1 } },
+      error: undefined,
+    });
+
+    const { container } = renderWithProviders(
+      <Component service={{ widget: { type: "goss", url: "http://x" } }} />,
+      { settings: { hideErrors: false } },
+    );
+
+    const details = container.querySelector("details");
+    details.setAttribute("open", "");
+
+    const dataDiv = details.querySelector("div");
+    fireEvent.click(dataDiv);
+
+    expect(details.hasAttribute("open")).toBe(false);
   });
 });
