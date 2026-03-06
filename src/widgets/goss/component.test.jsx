@@ -33,6 +33,7 @@ describe("widgets/goss/component", () => {
   it("renders counts when data is available", () => {
     useWidgetAPI.mockReturnValue({
       data: {
+        results: [],
         summary: {
           "test-count": 12,
           "failed-count": 1,
@@ -63,9 +64,12 @@ describe("widgets/goss/component", () => {
     expect(container.querySelector(".service-block")).toBeNull();
   });
 
-  it("renders raw summary when data is available", () => {
+  it("renders details summary when data is available", () => {
     useWidgetAPI.mockReturnValue({
-      data: { summary: { "test-count": 9, "failed-count": 0, "skipped-count": 1 } },
+      data: {
+        results: [],
+        summary: { "test-count": 9, "failed-count": 0, "skipped-count": 1 },
+      },
       error: undefined,
     });
 
@@ -74,12 +78,15 @@ describe("widgets/goss/component", () => {
       { settings: { hideErrors: false } },
     );
 
-    expect(screen.getByText("raw")).toBeInTheDocument();
+    expect(screen.getByText("details")).toBeInTheDocument();
   });
 
   it("collapses raw data when clicked", () => {
     useWidgetAPI.mockReturnValue({
-      data: { summary: { "test-count": 9, "failed-count": 0, "skipped-count": 1 } },
+      data: {
+        results: [],
+        summary: { "test-count": 9, "failed-count": 0, "skipped-count": 1 }
+      },
       error: undefined,
     });
 
@@ -95,5 +102,56 @@ describe("widgets/goss/component", () => {
     fireEvent.click(dataDiv);
 
     expect(details.hasAttribute("open")).toBe(false);
+  });
+
+  it("renders error when summary is missing", () => {
+    useWidgetAPI.mockReturnValue({
+      data: { results: [] },
+      error: undefined,
+    });
+
+    const { container } = renderWithProviders(
+      <Component service={{ widget: { type: "goss", url: "http://x" } }} />,
+      { settings: { hideErrors: false } },
+    );
+
+    expect(container.querySelector(".service-block")).toBeNull();
+  });
+
+  it("renders error when results is missing", () => {
+    useWidgetAPI.mockReturnValue({
+      data: { summary: { "test-count": 9, "failed-count": 0, "skipped-count": 0 } },
+      error: undefined,
+    });
+
+    const { container } = renderWithProviders(
+      <Component service={{ widget: { type: "goss", url: "http://x" } }} />,
+      { settings: { hideErrors: false } },
+    );
+
+    expect(container.querySelector(".service-block")).toBeNull();
+  });
+
+
+  it("renders results table with pass, fail and skipped", () => {
+    useWidgetAPI.mockReturnValue({
+      data: {
+        results: [
+          { "summary-line": "File: /etc/hosts: exists", successful: true, skipped: false },
+          { "summary-line": "Port: tcp:80: listening", successful: false, skipped: false },
+          { "summary-line": "Service: nginx: running", successful: false, skipped: true },
+        ],
+        summary: { "test-count": 3, "failed-count": 1, "skipped-count": 1 },
+      },
+      error: undefined,
+    });
+
+    const { container } = renderWithProviders(
+      <Component service={{ widget: { type: "goss", url: "http://x" } }} />,
+      { settings: { hideErrors: false } },
+    );
+
+    expect(container.querySelector("table")).toBeInTheDocument();
+    expect(container.querySelectorAll("tr")).toHaveLength(3);
   });
 });
