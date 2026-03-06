@@ -17,6 +17,16 @@ export default function Component({ service }) {
         <Block label="goss.failed" value={failed} />
         <Block label="goss.skipped" value={summary["skipped-count"]} />
       </Container>
+      {data && (
+        <details className="px-1 pb-1">
+          <summary className="text-center text-xs cursor-pointer text-theme-500 hover:text-theme-300">
+            raw
+          </summary>
+          <div className="mt-1 rounded-sm text-xs font-mono whitespace-pre-wrap break-all p-2">
+            {JSON.stringify(data, null, 2)}
+          </div>
+        </details>
+      )}
     </div>
   );
 }
