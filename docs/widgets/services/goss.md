@@ -15,8 +15,7 @@ widget:
   url: http://goss.host.or.ip:port
 ```
 
-!! Note: goss must serve json.  You can start it as follow:
-
+Note: Goss must be run in serve mode with JSON format. Example:
 ```bash
 GOSSFILE=/opt/healthchecks/goss.yaml
 LISTEN_PORT=8833
