@@ -1,11 +1,12 @@
 import Block from "components/services/widget/block";
 import Container from "components/services/widget/container";
 import useWidgetAPI from "utils/proxy/use-widget-api";
+import { useTranslation } from "next-i18next";
 
 export default function Component({ service }) {
   const { data, error } = useWidgetAPI(service.widget);
   if (error) return <Container service={service} error={error} />;
-
+  const { t } = useTranslation();
   const summary = data?.summary ?? {};
 
   if (data && (!data.summary || !data.results)) {
@@ -23,7 +24,7 @@ export default function Component({ service }) {
       {data?.results && (
         <details className="px-1 pb-1">
           <summary className="text-center text-xs cursor-pointer text-theme-500 hover:text-theme-300">
-            details
+            {t("goss.details")}
           </summary>
           <div className="mt-1 text-xs font-mono cursor-pointer"
             onClick={(e) => e.currentTarget.closest("details").removeAttribute("open")}>

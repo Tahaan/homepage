@@ -1180,5 +1180,11 @@
         "burned": "Burned",
         "remaining": "Remaining",
         "steps": "Steps"
+    },
+    "goss": {
+      "tests": "Tests",
+      "failed": "Failed",
+      "skipped": "Skipped",
+      "details": "Goss Details"
     }
 }

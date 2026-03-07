@@ -78,7 +78,7 @@ describe("widgets/goss/component", () => {
       { settings: { hideErrors: false } },
     );
 
-    expect(screen.getByText("details")).toBeInTheDocument();
+    expect(screen.getByText("goss.details")).toBeInTheDocument();
   });
 
   it("collapses raw data when clicked", () => {
