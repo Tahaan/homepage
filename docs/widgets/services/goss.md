@@ -7,7 +7,11 @@ Learn more about [Goss](https://github.com/goss-org/goss).
 
 Displays the results of a Goss health check endpoint, showing total tests, failed tests, and skipped tests. The widget highlights with a red border when any tests are failing.
 
-Note: Goss returns HTTP 503 when tests fail but still provides valid result data. This widget handles that correctly.
+A Drop-down detail view lets the user see the list of tests and their result, with an indicator for status:
+- ✓ Passed
+- ✗ Failed
+- — Skipped
+
 
 ```yaml
 widget:
