@@ -1,4 +1,4 @@
-//import genericProxyHandler from "utils/proxy/handlers/generic";
+// Custom proxy handler to return data when goss gives a 503 http return code.
 import gossProxyHandler from "./proxy.js";
 
 const widget = {
