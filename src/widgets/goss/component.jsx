@@ -5,8 +5,9 @@ import { useTranslation } from "next-i18next";
 
 export default function Component({ service }) {
   const { data, error } = useWidgetAPI(service.widget);
-  if (error) return <Container service={service} error={error} />;
   const { t } = useTranslation();
+
+  if (error) return <Container service={service} error={error} />;
   const summary = data?.summary ?? {};
 
   if (data && (!data.summary || !data.results)) {
