@@ -43,7 +43,7 @@ describe("widgets/goss/proxy", () => {
     await gossProxyHandler(req, res);
 
     expect(res.statusCode).toBe(200);
-    expect(JSON.parse(res.body).summary["test-count"]).toBe(9);
+    expect(res.body.summary["test-count"]).toBe(9);
   });
 
   it("returns data on HTTP 503 (goss failure state)", async () => {
@@ -58,7 +58,7 @@ describe("widgets/goss/proxy", () => {
     await gossProxyHandler(req, res);
 
     expect(res.statusCode).toBe(200);
-    expect(JSON.parse(res.body).summary["failed-count"]).toBe(2);
+    expect(res.body.summary["failed-count"]).toBe(2);
   });
 
   it("returns error with string body on HTTP error", async () => {

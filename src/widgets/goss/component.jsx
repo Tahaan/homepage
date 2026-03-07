@@ -29,7 +29,7 @@ export default function Component({ service }) {
           </summary>
           <div className="mt-1 text-xs font-mono cursor-pointer"
             onClick={(e) => e.currentTarget.closest("details").removeAttribute("open")}>
-            <div className="mb-1 text-theme-500">{service.href}healthz</div>
+            <div className="mb-1 text-theme-500">{data._gossUrl}</div>
             <table className="w-full">
               <tbody>
                 {data.results.map((result, i) => (

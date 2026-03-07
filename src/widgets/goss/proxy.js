@@ -22,7 +22,9 @@ export default async function gossProxyHandler(req, res) {
 
       // For goss: 503 still contains valid JSON result data, treat it as success
       if (status === 200 || status === 503) {
-        return res.status(200).send(data);
+        const responseData = JSON.parse(Buffer.from(data).toString());
+        responseData._gossUrl = urlString;
+        return res.status(200).json(responseData);
       }
 
       return res.status(status).json({
